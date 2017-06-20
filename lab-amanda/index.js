@@ -24,19 +24,26 @@ server.on('connection', (socket) => {
     let data = buffer.toString();
 
     if(data.startsWith('/dm')) {
-      let username = data.split('')[1];
-      let matchedUsers = clientPool.filter;
-      let user =
-      content = content.trim();
-      clientPool.filter(client);
-
+      let username = data.split(' ')[1];
+      let matchedUsers = clientPool.filter(item => item.nickname === username);
+      matchedUsers.forEach((dmUser) => {
+        let message = data.split(' ').slice(2).join(' ');
+        dmUser.socket.write(`${client.nickname}: ${message}`);
+      });
+      return;
     }
 
-    // if(data.startsWith('/troll')) {
-    //   let content = data.split('/dm')[1] || '';
-    //   console.log('line 29', client);
-    //   clientPool.filter(client);
-    // }
+    if(data.startsWith('/troll')) {
+      let timestoWrite = data.split('/troll ')[1].slice(0, 1);
+      let content = data.split(' ').slice(2).join( );
+      console.log(timestoWrite);
+      for (var i = 0; i < timestoWrite; i++) {
+        clientPool.forEach((user) => {
+          user.write(`${client.nickname}: ${content}\n`);
+        });
+        return;
+      }
+    }
 
     if(data.startsWith('/nick')) {
       let content = data.split('/nick')[1] || '';
